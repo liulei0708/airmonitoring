@@ -1,0 +1,15 @@
+server: 
+  port: 8761
+
+eureka: 
+  client: 
+    registerWithEureka: false
+    fetchRegistry: false
+  instance: 
+    prefer-ip-address: true
+    ip-address: 192.168.1.7
+    instance-id: 192.168.1.7:8761
+
+spring: 
+  application: 
+    name: eurka-server
