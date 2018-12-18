@@ -17,10 +17,10 @@
 <script type="text/javascript">
 	$(function () {
 		$.ajax({
-			url:'http://localhost:8123/aaa/air/about/get',
+			url:'https://www.shiliuyuan.club/aaa/air/ad/list',
 			type: 'get',
 			beforeSend: function (request) {
-				request.setRequestHeader("spatial", "123456789012345678901234");
+				request.setRequestHeader("spatial", "1234567890123456789012345");
 			},
 			success: function (res) {
 				console.log(res)

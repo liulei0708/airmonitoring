@@ -29,9 +29,9 @@ spring:
 eureka: 
   instance: 
     prefer-ip-address: true
-    instance-id: 192.168.1.7:${server.port}
+    instance-id: 10.163.6.164:${server.port}
     lease-renewal-interval-in-seconds: 10
     lease-expiration-duration-in-seconds: 30
   client: 
     service-url: 
-      defaultZone: http://192.168.1.7:8761/eureka/
+      defaultZone: http://10.163.6.164:8761/eureka/

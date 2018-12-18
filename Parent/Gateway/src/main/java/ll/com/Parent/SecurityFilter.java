@@ -43,7 +43,7 @@ public class SecurityFilter implements GlobalFilter, Ordered
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain)
 	{
-		System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++");
+		// System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++");
 		try
 		{
 			String path = exchange.getRequest().getPath().value();
@@ -63,7 +63,7 @@ public class SecurityFilter implements GlobalFilter, Ordered
 
 			if (token == null || token.isEmpty() || token.length() != 24)
 			{
-				System.out.println("token不合法");
+				// System.out.println("token不合法");
 				exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
 
 				byte[] bytes = "{\"code\": 401,  \"data\": {}}".getBytes(StandardCharsets.UTF_8);
@@ -88,7 +88,7 @@ public class SecurityFilter implements GlobalFilter, Ordered
 		} catch (Exception e)
 		{
 			e.printStackTrace();
-			System.out.println("进入了异常");
+			// System.out.println("进入了异常");
 			exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
 			return exchange.getResponse().setComplete();
 		}
@@ -96,33 +96,38 @@ public class SecurityFilter implements GlobalFilter, Ordered
 		// exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
 		// return exchange.getResponse().setComplete();
 	}
-	
-	@Bean
-    public WebFilter corsFilter() {
-        return (ServerWebExchange ctx, WebFilterChain chain) -> {
-            ServerHttpRequest request = ctx.getRequest();
-            if (!CorsUtils.isCorsRequest(request)) {
-                return chain.filter(ctx);
-            }
 
-            HttpHeaders requestHeaders = request.getHeaders();
-            ServerHttpResponse response = ctx.getResponse();
-            HttpMethod requestMethod = requestHeaders.getAccessControlRequestMethod();
-            HttpHeaders headers = response.getHeaders();
-            headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, requestHeaders.getOrigin());
-            headers.addAll(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, requestHeaders.getAccessControlRequestHeaders());
-            if (requestMethod != null) {
-                headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, requestMethod.name());
-            }
-            headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
-            headers.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "*");
-            headers.add(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "18000L");
-            if (request.getMethod() == HttpMethod.OPTIONS) {
-                response.setStatusCode(HttpStatus.OK);
-                return Mono.empty();
-            }
-            System.out.println("跨域处理结束!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            return chain.filter(ctx);
-        };
-    }
+	@Bean
+	public WebFilter corsFilter()
+	{
+		return (ServerWebExchange ctx, WebFilterChain chain) ->
+		{
+			ServerHttpRequest request = ctx.getRequest();
+			if (!CorsUtils.isCorsRequest(request))
+			{
+				return chain.filter(ctx);
+			}
+
+			HttpHeaders requestHeaders = request.getHeaders();
+			ServerHttpResponse response = ctx.getResponse();
+			HttpMethod requestMethod = requestHeaders.getAccessControlRequestMethod();
+			HttpHeaders headers = response.getHeaders();
+			headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, requestHeaders.getOrigin());
+			headers.addAll(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, requestHeaders.getAccessControlRequestHeaders());
+			if (requestMethod != null)
+			{
+				headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, requestMethod.name());
+			}
+			headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
+			headers.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "*");
+			headers.add(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "18000L");
+			if (request.getMethod() == HttpMethod.OPTIONS)
+			{
+				response.setStatusCode(HttpStatus.OK);
+				return Mono.empty();
+			}
+			// System.out.println("跨域处理结束!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			return chain.filter(ctx);
+		};
+	}
 }
